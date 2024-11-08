@@ -1,0 +1,54 @@
+.CallBtnCSS
+{
+    border: none;
+    background-color: #8b9503;
+    margin:1%;
+    padding: 1%;
+    color:#f2f7aa;
+    border-radius: 2.5rem;
+    cursor: pointer;
+}
+.DisconnectCall
+{
+    z-index: 1;
+    height: 5vh;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap:20%;
+    border-radius: 1.5rem;
+    position:relative;
+    top:90vh;
+    left:25vw
+}
+.DisconnectCall button
+{
+    border: none;
+    border-radius: 1.5rem;
+    background-color: #8b9503;
+    cursor: pointer;
+    font-size: larger;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+.RoomPageCSS {
+    color: #8b9503;
+    text-align: center;
+    background-color: rgb(76, 74, 74);
+}
+
+.videoCallDiv {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(76, 74, 74);
+}
+
+@media (max-width:480px)
+{
+    .DisconnectCall
+    {
+        top:25vh;
+        left:16vw
+    }
+}

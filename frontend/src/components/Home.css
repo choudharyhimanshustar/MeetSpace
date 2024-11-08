@@ -1,0 +1,97 @@
+.bannerImg {
+    width: 50%;
+    position: relative;
+    left: 40%;
+}
+
+.HomeCSS {
+    display: flex;
+    flex-direction: column;
+    color: #8b9503;
+}
+
+.HomeSubCSS {
+    display: flex;
+    flex-direction: row;
+    gap: 80%;
+    position:fixed;
+    top:10%
+}
+
+.HomeBtnCSS {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    left:20%;
+    top:30vh;
+    text-align: center;
+}
+.HomeBtnCSS button
+{
+    margin: 10%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 5%;
+    background-color: #f2f7aa;
+    color: #8b9503;
+    cursor: pointer;
+}
+.logOutCss
+{
+    width: fit-content;
+    height: 5vh;
+    border: none;
+    background: transparent;
+    font-size: larger;
+    color: #8b9503;
+    cursor: pointer;
+    position:relative;
+    top:29%
+}
+.NavbarCSS {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.NavbarCSS div
+{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width:30%;
+    gap:20%;
+    z-index: 1;
+}
+
+@media (max-width:480px)
+{
+    .HomeSubCSS {
+        display: flex;
+        flex-direction: column;
+        position:fixed;
+        top:10%;
+        left:1%;
+        text-align: center;
+    }
+    .bannerImg
+    {
+        position: fixed;
+        top:10%;
+        left:25%
+    }
+    .HomeBtnCSS
+    {
+        display: flex;
+        flex-direction: column;
+        width: 50vw;
+        position: relative;
+        left:55%;
+        top:50vh;
+        align-items: center;
+    }
+    .HomeBtnCSS button
+    {
+        width:100%
+    }
+}
