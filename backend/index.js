@@ -30,6 +30,14 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.options('*', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "https://meet-space-ten.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.sendStatus(200); // Preflight request success
+});
+
 app.use('/', Authenticate);
 app.use('/login', Login);
 app.use('/SignUP', SignUP);
