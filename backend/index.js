@@ -18,20 +18,17 @@ const SignUP = require('./components/SignUP');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
-const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'https://meet-space-ten.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.sendStatus(200); // Respond OK for preflight requests
+app.use((req, res, next) => {
+  // Enabling CORS
+  res.header("Access-Control-Allow-Origin", "https://meet-space-ten.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  if (req.method === 'OPTIONS') {
+    // Respond to preflight request
+    return res.status(200).send();
+  }
+  next();
 });
 app.use('/', Authenticate);
 app.use('/login', Login);
