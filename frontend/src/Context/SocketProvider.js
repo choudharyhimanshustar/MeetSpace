@@ -9,7 +9,7 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("https://meetspace-zt28.onrender.com"), []);
+  const socket = useMemo(() => io("https://meet-space-gsnh.vercel.app"), []);
 
   return (
     <SocketContext.Provider value={socket}>
