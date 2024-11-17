@@ -16,7 +16,7 @@ const httpServer = http.createServer(app);
 // Attach Socket.IO to the HTTP server
 const io = new Server(httpServer, {
   cors: {
-    origin: '*',
+    origin: 'https://meet-space-ten.vercel.app',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
 const corsOptions = {
-  origin: '*',
+  origin: 'https://meet-space-ten.vercel.app',
   credentials: true,
   methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
   allowedHeaders: 'Content-Type,Authorization',
@@ -97,6 +97,7 @@ io.on("connection", (socket) => {
 
 // Start the server
 const PORT = process.env.PORT || 2000;
-httpServer.listen(PORT, () => {
+const HOST = '0.0.0.0';
+httpServer.listen(PORT,HOST, () => {
   console.log(`Server connected on ${PORT}`);
 });
