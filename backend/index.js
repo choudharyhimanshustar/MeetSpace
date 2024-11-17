@@ -19,26 +19,39 @@ connect();
 
 // CORS Configuration
 const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app', // Allow specific origin
+  origin: process.env.CORS_ORIGIN, // Allow specific origin
   credentials: true,                           // Allow credentials (cookies, etc.)
- /*  methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
-  allowedHeaders: 'Content-Type,Authorization', // Required headers */
+  /*  methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
+   allowedHeaders: 'Content-Type,Authorization', // Required headers */
 };
+console.log(process.env.CORS_ORIGIN)
 
-app.use(cors(corsOptions));
-
+app.use(cors({
+  origin: [
+    'https://miniature-space-enigma-rvpjw5xvvx73w7pj-3000.app.github.dev',
+    'https://meet-space-ten.vercel.app'
+  ],
+  credentials: true,
+}));
 // Handle Preflight Requests
 app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/', Authenticate);
-app.use('/login', Login);
+app.route("/", () => console.log("Welcome to Meet Space"))
+app.use('/login', (req, res) => {
+  console.log(req)
+  Login()
+});
 app.use('/SignUP', SignUP);
 
 // Socket.IO Server
 const io = new Server(2001, {
   cors: {
-    origin: 'https://meet-space-ten.vercel.app',
+    origin: [
+      'https://miniature-space-enigma-rvpjw5xvvx73w7pj-3000.app.github.dev', // Your frontend URL
+      'https://meet-space-ten.vercel.app' // Any other allowed origins
+    ],
     methods: ['GET', 'POST'],
     credentials: true,
   },
