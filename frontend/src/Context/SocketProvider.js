@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 const SocketContext = createContext(null);
 
-const SOCKET_URL = "http://localhost:2001";
+const SOCKET_URL = process.env.REACT_APP_BACKEND_URL;
 export const useSocket = () => {
   const socket = useContext(SocketContext);
   return socket;

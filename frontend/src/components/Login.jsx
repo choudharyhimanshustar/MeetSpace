@@ -12,7 +12,7 @@ export default function Login() {
     try {
       if (!BASE_URL) alert("Backend URL not set");
       const response = await axios.post(
-        `http://localhost:2002/login`,
+        `http://localhost:5000/login`,
         { email: email, password: password },
         { withCredentials: true }
       );
