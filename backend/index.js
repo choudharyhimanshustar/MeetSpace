@@ -1,20 +1,28 @@
 const express = require('express');
 const app = express();
+const http = require('http'); // Import http module
 const { Server } = require("socket.io");
-const io = new Server(2001, {
+const connect = require('./connection/db');
+const cors = require('cors');
+require('dotenv').config();
+
+const Authenticate = require('./components/Authenticate');
+const Login = require('./components/Login');
+const SignUP = require('./components/SignUP');
+
+// Create an HTTP server
+const httpServer = http.createServer(app);
+
+// Attach Socket.IO to the HTTP server
+const io = new Server(httpServer, {
   cors: {
     origin: 'https://meet-space-ten.vercel.app',
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
-const connect = require('./connection/db');
-const cors = require('cors');
 
-require('dotenv').config();
-const Authenticate = require('./components/Authenticate')
-const Login = require('./components/Login');
-const SignUP = require('./components/SignUP');
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
@@ -34,24 +42,28 @@ app.options('*', (req, res) => {
   res.sendStatus(200); // Respond with a 200 status
 });
 
+// Routes
 app.use('/', Authenticate);
-app.use('/login', Login); 
+app.use('/login', Login);
 app.use('/SignUP', SignUP);
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
 
+// Socket.IO connection handling
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
+
   socket.on("room:join", (data) => {
     const { email, roomID } = data;
-    console.log("Email", email, "RoomID", roomID)
+    console.log("Email", email, "RoomID", roomID);
     emailToSocketIdMap.set(email, socket.id);
     socketidToEmailMap.set(socket.id, email);
     io.to(roomID).emit("user:joined", { email, id: socket.id });
     socket.join(roomID);
     io.to(socket.id).emit("room:join", data);
   });
+
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incomming:call", { from: socket.id, offer });
   });
@@ -69,18 +81,22 @@ io.on("connection", (socket) => {
     console.log("peer:nego:done", ans);
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
+
   socket.on("call:disconnected", ({ to }) => {
     io.to(to).emit("call:disconnected", { to: to });
   });
+
   socket.on("video:toggle", ({ to, isVideoEnabled }) => {
     io.to(to).emit("video:toggle", { to: to, isVideoEnabled: isVideoEnabled });
-  })
+  });
+
   socket.on("audio:toggle", ({ to, isAudioEnabled }) => {
     io.to(to).emit("audio:toggle", { to: to, isAudioEnabled: isAudioEnabled });
   });
-})
+});
 
+// Start the server
 const PORT = process.env.PORT || 2000;
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server connected on ${PORT}`);
 });
