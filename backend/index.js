@@ -3,7 +3,7 @@ const app = express();
 const { Server } = require("socket.io");
 const io = new Server(2001, {
   cors: {
-    origin: 'https://meet-space-ten.vercel.app',
+    origin: '*',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
 const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app/',
+  origin: '*',
   credentials: true,
   methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
   allowedHeaders: 'Content-Type,Authorization',
