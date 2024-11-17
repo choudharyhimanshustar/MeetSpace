@@ -8,12 +8,19 @@ export const useSocket = () => {
   return socket;
 };
 
-export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("https://meet-space-gsnh.vercel.app"), []);
+export const SocketProvider = ({ user, children }) => {
+  const socket = useMemo(() => {
+    if (user) {
+      return io("https://meet-space-gsnh.vercel.app", {
+        auth: { token: user.token }, // Optionally send token for authentication
+      });
+    }
+    return null; // No socket connection if not logged in
+  }, [user]);
 
   return (
     <SocketContext.Provider value={socket}>
-      {props.children}
+      {children}
     </SocketContext.Provider>
   );
 };

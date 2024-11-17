@@ -18,38 +18,80 @@ app.use(express.urlencoded({ extended: true }));
 connect();
 
 // CORS Configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://meet-space-ten.vercel.app",
+  "https://meet-space-gsnh.vercel.app",
+];
+
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://meet-space-ten.vercel.app"],
-  credentials: true, // Allow credentials (cookies, etc.)
-  methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
-  allowedHeaders: "Content-Type,Authorization",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
+// Apply CORS middleware before any routes
 app.use(cors(corsOptions));
 
-// Handle Preflight Requests
+// Handle preflight requests
 app.options("*", cors(corsOptions));
 
 // Routes
 app.use("/", Authenticate);
-app.route("/", (req, res) => res.send("Meet Space API"));
+app.get("/", (req, res) => res.send("Meet Space API")); // Fixed route definition
 app.use("/login", Login);
 app.use("/SignUP", SignUP);
 
-// Socket.IO Server
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  if (err.message === "Not allowed by CORS") {
+    res.status(403).json({
+      error: "CORS Error",
+      message: "This origin is not allowed to access the resource",
+    });
+  } else {
+    next(err);
+  }
+});
+
+// Socket.IO Server with updated CORS configuration
 const io = new Server(2001, {
   cors: {
-    origin: ["http://localhost:3000", "https://meet-space-ten.vercel.app"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+    ],
   },
 });
 
+// Rest of your Socket.IO code remains the same...
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
 
 io.on("connection", (socket) => {
-  console.log(`Socket Connected`, socket.id);
+  console.log("Socket Connected", socket.id);
 
   socket.on("room:join", (data) => {
     const { email, roomID } = data;
@@ -93,7 +135,7 @@ io.on("connection", (socket) => {
 });
 
 // HTTP Server
-const PORT = 2002;
+const PORT = process.env.PORT || 2002;
 app.listen(PORT, () => {
   console.log(`Server connected on ${PORT}`);
 });
