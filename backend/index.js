@@ -28,7 +28,7 @@ console.log(process.env.CORS_ORIGIN)
 
 app.use(cors({
   origin: [
-    'https://miniature-space-enigma-rvpjw5xvvx73w7pj-3000.app.github.dev',
+    process.env.CORS_ORIGIN,
     'https://meet-space-ten.vercel.app'
   ],
   credentials: true,
@@ -49,7 +49,7 @@ app.use('/SignUP', SignUP);
 const io = new Server(2001, {
   cors: {
     origin: [
-      'https://miniature-space-enigma-rvpjw5xvvx73w7pj-3000.app.github.dev', // Your frontend URL
+      process.env.CORS_ORIGIN, // Your frontend URL
       'https://meet-space-ten.vercel.app' // Any other allowed origins
     ],
     methods: ['GET', 'POST'],
