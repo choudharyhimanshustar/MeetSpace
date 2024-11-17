@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const { Server } = require("socket.io");
-const connect = require('./connection/db');
-const cors = require('cors');
+const connect = require("./connection/db");
+const cors = require("cors");
 
-require('dotenv').config();
+require("dotenv").config();
 
-const Authenticate = require('./components/Authenticate');
-const Login = require('./components/Login');
-const SignUP = require('./components/SignUP');
+const Authenticate = require("./components/Authenticate");
+const Login = require("./components/Login");
+const SignUP = require("./components/SignUP");
 
 // Middleware
 app.use(express.json());
@@ -20,39 +20,38 @@ connect();
 // CORS Configuration
 const corsOptions = {
   origin: process.env.CORS_ORIGIN, // Allow specific origin
-  credentials: true,                           // Allow credentials (cookies, etc.)
-  /*  methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
-   allowedHeaders: 'Content-Type,Authorization', // Required headers */
+  credentials: true, // Allow credentials (cookies, etc.)
+  methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
+  allowedHeaders: "Content-Type,Authorization",
 };
-console.log(process.env.CORS_ORIGIN)
+console.log(process.env.CORS_ORIGIN);
 
-app.use(cors({
-  origin: [
-    process.env.CORS_ORIGIN,
-    'https://meet-space-ten.vercel.app'
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
+    credentials: true,
+  })
+);
 // Handle Preflight Requests
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Routes
-app.use('/', Authenticate);
-app.route("/", () => console.log("Welcome to Meet Space"))
-app.use('/login', (req, res) => {
-  console.log(req)
-  Login()
+app.use("/", Authenticate);
+app.route("/", () => console.log("Welcome to Meet Space"));
+app.use("/login", (req, res) => {
+  console.log(req);
+  Login();
 });
-app.use('/SignUP', SignUP);
+app.use("/SignUP", SignUP);
 
 // Socket.IO Server
 const io = new Server(2001, {
   cors: {
     origin: [
       process.env.CORS_ORIGIN, // Your frontend URL
-      'https://meet-space-ten.vercel.app' // Any other allowed origins
+      "https://meet-space-ten.vercel.app", // Any other allowed origins
     ],
-    methods: ['GET', 'POST'],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
