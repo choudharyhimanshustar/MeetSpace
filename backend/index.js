@@ -30,6 +30,7 @@ app.use(
   cors({
     origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
     credentials: true,
+    methods: ["GET", "POST"],
   })
 );
 // Handle Preflight Requests
