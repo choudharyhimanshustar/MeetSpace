@@ -12,9 +12,9 @@ export default function Login() {
     try {
       if (!BASE_URL) alert("Backend URL not set");
       const response = await axios.post(
-        `https://meet-space-gsnh.vercel.app/login`,
+        `http://localhost:2002/login`,
         { email: email, password: password },
-        { withCredentials: true } // Include credentials
+        { withCredentials: true }
       );
       const data = response.data;
 
