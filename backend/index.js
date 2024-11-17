@@ -19,20 +19,14 @@ connect();
 
 // CORS Configuration
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://meet-space-ten.vercel.app"],
   credentials: true, // Allow credentials (cookies, etc.)
   methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
   allowedHeaders: "Content-Type,Authorization",
 };
-console.log(process.env.CORS_ORIGIN);
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-    methods: ["GET", "POST"],
-  })
-);
+app.use(cors(corsOptions));
+
 // Handle Preflight Requests
 app.options("*", cors(corsOptions));
 
@@ -45,7 +39,7 @@ app.use("/SignUP", SignUP);
 // Socket.IO Server
 const io = new Server(2001, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://meet-space-ten.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -99,7 +93,7 @@ io.on("connection", (socket) => {
 });
 
 // HTTP Server
-const PORT = 2000;
+const PORT = 2002;
 app.listen(PORT, () => {
   console.log(`Server connected on ${PORT}`);
 });
