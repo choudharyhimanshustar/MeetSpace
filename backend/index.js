@@ -37,7 +37,7 @@ app.use("/login", Login);
 app.use("/SignUP", SignUP);
 
 // Socket.IO Server
-const io = new Server(443, {
+const io = new Server(2001, {
   cors: {
     origin: ["http://localhost:3000", "https://meet-space-ten.vercel.app"],
     methods: ["GET", "POST"],
@@ -93,7 +93,7 @@ io.on("connection", (socket) => {
 });
 
 // HTTP Server
-const PORT = 443;
+const PORT = 2002;
 app.listen(PORT, () => {
   console.log(`Server connected on ${PORT}`);
 });
