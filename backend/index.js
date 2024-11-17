@@ -38,7 +38,7 @@ app.use('/SignUP', SignUP);
 // Socket.IO Server
 const io = new Server(2001, {
   cors: {
-    origin: 'https://meet-space-ten.vercel.app',
+    origin: 'https://meet-space-ten.vercel.app:2001',
     methods: ['GET', 'POST'],
     credentials: true,
   },
