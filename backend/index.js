@@ -1,7 +1,6 @@
 const express = require("express");
-const app = express();
+const path = require("path");
 const http = require("http");
-const server = http.createServer(app);
 const { Server } = require("socket.io");
 const connect = require("./connection/db");
 const cors = require("cors");
@@ -10,6 +9,9 @@ require("dotenv").config();
 const Authenticate = require("./components/Authenticate");
 const Login = require("./components/Login");
 const SignUP = require("./components/SignUP");
+
+const app = express();
+const server = http.createServer(app);
 
 // Middleware
 app.use(express.json());
@@ -26,16 +28,26 @@ const allowedOrigins = [
 ];
 const corsOptions = {
   origin: allowedOrigins,
-  methods: ["GET", "POST","OPTIONS","PUT","DELETE"],
+  methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   credentials: true,
 };
 app.use(cors(corsOptions)); // Apply CORS middleware
 
 // Routes
 app.use("/", Authenticate);
-app.get("/", (req, res) => res.send("Meet Space API")); // Fixed route definition
+app.get("/", (req, res) => res.send("Meet Space API"));
 app.use("/login", Login);
 app.use("/SignUP", SignUP);
+
+// Serve React build files in production
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "../frontend/build");
+  app.use(express.static(buildPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(buildPath, "index.html"));
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -59,7 +71,6 @@ const io = new Server(server, {
   },
 });
 
-// Socket.IO logic
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
 
