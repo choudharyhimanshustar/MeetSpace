@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
 const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app',
+  origin: 'https://meet-space-ten.vercel.app/',
   credentials: true,
   methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
   allowedHeaders: 'Content-Type,Authorization',
@@ -97,11 +97,6 @@ io.on("connection", (socket) => {
 
 // Start the server
 const PORT = process.env.PORT || 2000;
-const HOST = '0.0.0.0';
-try {
-  httpServer.listen(PORT, HOST, () => {
-    console.log(`Server connected on ${PORT}`);
-  });
-} catch (error) {
-  console.error(`Failed to start server: ${error.message}`);
-}
+httpServer.listen(PORT, () => {
+  console.log(`Server connected on ${PORT}`);
+});
