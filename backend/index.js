@@ -98,6 +98,10 @@ io.on("connection", (socket) => {
 // Start the server
 const PORT = process.env.PORT || 2000;
 const HOST = '0.0.0.0';
-httpServer.listen(PORT,HOST, () => {
-  console.log(`Server connected on ${PORT}`);
-});
+try {
+  httpServer.listen(PORT, HOST, () => {
+    console.log(`Server connected on ${PORT}`);
+  });
+} catch (error) {
+  console.error(`Failed to start server: ${error.message}`);
+}
