@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const { Server } = require("socket.io");
-const connect = require('./connection/db');
-const cors = require('cors');
+const connect = require("./connection/db");
+const cors = require("cors");
 
-require('dotenv').config();
+require("dotenv").config();
 
-const Authenticate = require('./components/Authenticate');
-const Login = require('./components/Login');
-const SignUP = require('./components/SignUP');
+const Authenticate = require("./components/Authenticate");
+const Login = require("./components/Login");
+const SignUP = require("./components/SignUP");
 
 // Middleware
 app.use(express.json());
@@ -19,27 +19,37 @@ connect();
 
 // CORS Configuration
 const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app', // Allow specific origin
-  credentials: true,                           // Allow credentials (cookies, etc.)
- /*  methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
-  allowedHeaders: 'Content-Type,Authorization', // Required headers */
+  origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
+  credentials: true, // Allow credentials (cookies, etc.)
+  methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
+  allowedHeaders: "Content-Type,Authorization",
 };
+console.log(process.env.CORS_ORIGIN);
 
-app.use(cors(corsOptions));
-
+app.use(
+  cors({
+    origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
+    credentials: true,
+    methods: ["GET", "POST"],
+  })
+);
 // Handle Preflight Requests
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Routes
-app.use('/', Authenticate);
-app.use('/login', Login);
-app.use('/SignUP', SignUP);
+app.use("/", Authenticate);
+app.route("/", (req, res) => res.send("Meet Space API"));
+app.use("/login", Login);
+app.use("/SignUP", SignUP);
 
 // Socket.IO Server
 const io = new Server(2001, {
   cors: {
-    origin: 'https://meet-space-ten.vercel.app',
-    methods: ['GET', 'POST'],
+    origin: [
+      process.env.CORS_ORIGIN, // Your frontend URL
+      "https://meet-space-ten.vercel.app", // Any other allowed origins
+    ],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
