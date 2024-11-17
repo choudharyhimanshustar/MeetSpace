@@ -4,15 +4,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 export default function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("himanshuch3003@gmail.com");
+  const [password, setPassword] = useState("123");
   const navigate = useNavigate();
 
   const handleClick = async () => {
     try {
       if (!BASE_URL) alert("Backend URL not set");
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/login`,
+        `https://meet-space-gsnh.vercel.app/login`,
         { email: email, password: password },
         { withCredentials: true } // Include credentials
       );
