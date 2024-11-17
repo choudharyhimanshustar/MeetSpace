@@ -19,7 +19,7 @@ connect();
 
 // CORS Configuration
 const corsOptions = {
-  origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
+  origin: [process.env.CORS_ORIGIN],
   credentials: true, // Allow credentials (cookies, etc.)
   methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
   allowedHeaders: "Content-Type,Authorization",
@@ -28,7 +28,7 @@ console.log(process.env.CORS_ORIGIN);
 
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
+    origin: [process.env.CORS_ORIGIN],
     credentials: true,
     methods: ["GET", "POST"],
   })
