@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 const SocketContext = createContext(null);
 
-const SOCKET_URL = "http://localhost:2001";
+const SOCKET_URL = "https://meetspace-zt28.onrender.com:2001";
 export const useSocket = () => {
   const socket = useContext(SocketContext);
   return socket;
