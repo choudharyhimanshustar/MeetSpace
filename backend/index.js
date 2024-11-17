@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connect();
 const corsOptions = {
-  origin: 'https://meet-space-ten.vercel.app/',
+  origin: 'https://meet-space-ten.vercel.app',
   credentials: true,
   methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
   allowedHeaders: 'Content-Type,Authorization',
