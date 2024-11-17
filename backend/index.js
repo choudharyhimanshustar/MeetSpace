@@ -19,7 +19,7 @@ connect();
 
 // CORS Configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN, // Allow specific origin
+  origin: [process.env.CORS_ORIGIN, "https://meet-space-ten.vercel.app"],
   credentials: true, // Allow credentials (cookies, etc.)
   methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH",
   allowedHeaders: "Content-Type,Authorization",
@@ -38,11 +38,8 @@ app.options("*", cors(corsOptions));
 
 // Routes
 app.use("/", Authenticate);
-app.route("/", () => console.log("Welcome to Meet Space"));
-app.use("/login", (req, res) => {
-  console.log(req);
-  Login();
-});
+app.route("/", (req, res) => res.send("Meet Space API"));
+app.use("/login", Login);
 app.use("/SignUP", SignUP);
 
 // Socket.IO Server
